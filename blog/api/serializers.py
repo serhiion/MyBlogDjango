@@ -8,13 +8,23 @@ from blog.models import Post
 
 
 class PostSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(required=True)
-    content = serializers.CharField(required=True)
-    date_posted = serializers.DateTimeField
-    author = serializers.CharField(required=True)
+    # title = serializers.CharField(required=True)
+    # content = serializers.CharField(required=True)
+    # date_posted = serializers.DateTimeField
+    # author = serializers.CharField(required=True)
 
     class Meta:
         model = Post
         fields = [
             'id', 'title', 'content', 'date_posted', 'author'
         ]
+
+
+class PostCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        exclude = [
+            'author'
+        ]
+
