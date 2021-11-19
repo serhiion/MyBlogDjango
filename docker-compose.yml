@@ -30,15 +30,5 @@ services:
     stdin_open: true
     tty: true
 
-  redis:
-    container_name: redis
-    image: redis:5.0.3-alpine
-    volumes:
-      - .:/code
-    restart: on-failure
-    ports:
-      - '5672:6379'
-    networks:
-      - main
 networks:
   main:
