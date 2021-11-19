@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: postgrats
+    environment:
+      POSTGRES_USER: s-admin
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: database1
+    volumes:
+      - /var/lib/postgresql/data
+      - .:/code
+    image: postgres
+    networks:
+      - main
+
+  web:
+    container_name: web
+    build: .
+    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    restart: on-failure
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - main
+    stdin_open: true
+    tty: true
+
+  redis:
+    container_name: redis
+    image: redis:5.0.3-alpine
+    volumes:
+      - .:/code
+    restart: on-failure
+    ports:
+      - '5672:6379'
+    networks:
+      - main
+networks:
+  main:
